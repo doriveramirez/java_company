@@ -12,6 +12,12 @@
 			<artifactId>hibernate-core</artifactId>
 			<version>5.3.18.Final</version>
 		</dependency>
+		<!-- Hibernate Date types -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-java8</artifactId>
+			<version>5.3.18.Final</version>
+		</dependency>
 		<!-- Mediate between hibernate & JPA -->
 		<dependency>
 			<groupId>org.hibernate</groupId>

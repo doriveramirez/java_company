@@ -6,6 +6,9 @@
              version="2.0" xmlns="http://java.sun.com/xml/ns/persistence">
 
   <persistence-unit name="Persistence">
+  	<class>es.doriv.hibernate.model.Item</class>
+  	<class>es.doriv.hibernate.model.PriceReduction</class>
+  	<class>es.doriv.hibernate.model.Supplier</class>
     <properties>
         <property name="javax.persistence.jdbc.driver" value="org.h2.Driver" />
         <property name="javax.persistence.jdbc.url" value="jdbc:h2:mem:company" />
