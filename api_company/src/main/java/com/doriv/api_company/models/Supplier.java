@@ -1,4 +1,4 @@
-package es.doriv.hibernate.models;
+package com.doriv.api_company.models;
 
 import java.io.Serializable;
 import java.util.HashSet;
@@ -8,6 +8,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
@@ -18,6 +20,7 @@ public class Supplier implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "ID_SUPPLIER")
 	private Long id;
 
@@ -34,8 +37,7 @@ public class Supplier implements Serializable {
 	public Supplier() {
 	}
 
-	public Supplier(Long id, String name, String country, Set<Item> items) {
-		this.id = id;
+	public Supplier(String name, String country, Set<Item> items) {
 		this.name = name;
 		this.country = country;
 		this.items = items;
@@ -85,3 +87,4 @@ public class Supplier implements Serializable {
 	}
 
 }
+

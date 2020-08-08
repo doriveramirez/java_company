@@ -1,4 +1,4 @@
-package es.doriv.hibernate.models;
+package com.doriv.api_company.models;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -9,6 +9,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -22,11 +24,15 @@ public class Item implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "ID_ITEM")
-	private Long id;
+	private int id;
 
 	@Column(name = "CODE")
 	private int code;
+	
+	@Column(name = "DESCRIPTION")
+	private String Description;
 
 	@Column(name = "PRICE")
 	private double Price;
@@ -52,12 +58,11 @@ public class Item implements Serializable {
 
 	public Item() {
 	}
-
-	public Item(Long id, int code, double price, boolean state, Set<Supplier> suppliers,
+	
+	public Item(int code, String description, double price, boolean state, Set<Supplier> suppliers,
 			Set<PriceReduction> priceReductions, LocalDate creationDate, String creator) {
-		super();
-		this.id = id;
 		this.code = code;
+		Description = description;
 		Price = price;
 		State = state;
 		this.suppliers = suppliers;
@@ -66,11 +71,11 @@ public class Item implements Serializable {
 		this.creator = creator;
 	}
 
-	public Long getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
@@ -140,11 +145,19 @@ public class Item implements Serializable {
 		this.creator = creator;
 	}
 
+	public String getDescription() {
+		return Description;
+	}
+
+	public void setDescription(String description) {
+		Description = description;
+	}
+
 	@Override
 	public String toString() {
-		return "Item [id=" + id + ", code=" + code + ", Price=" + Price + ", State=" + State + ", suppliers="
-				+ suppliers + ", priceReductions=" + priceReductions + ", creationDate=" + creationDate + ", creator="
-				+ creator + "]";
+		return "Item [id=" + id + ", code=" + code + ", Description=" + Description + ", Price=" + Price + ", State="
+				+ State + ", suppliers=" + suppliers + ", priceReductions=" + priceReductions + ", creationDate="
+				+ creationDate + ", creator=" + creator + "]";
 	}
 
 }

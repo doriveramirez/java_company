@@ -1,4 +1,4 @@
-package es.doriv.hibernate.models;
+package com.doriv.api_company.models;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -19,6 +19,7 @@ public class PriceReduction implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "ID_PRICE_REDUCTION")
 	private Long id;
 
@@ -35,8 +36,7 @@ public class PriceReduction implements Serializable {
 	public PriceReduction() {
 	}
 
-	public PriceReduction(Long id, double reducedPrice, LocalDate startDate, Item item) {
-		this.id = id;
+	public PriceReduction(double reducedPrice, LocalDate startDate, Item item) {
 		this.reducedPrice = reducedPrice;
 		this.startDate = startDate;
 		this.item = item;
