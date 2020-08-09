@@ -1,21 +1,21 @@
 package com.doriv.api_company;
 
-import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
+//import java.time.LocalDate;
+//import java.util.HashSet;
+//import java.util.Set;
+//
+//import javax.persistence.EntityManager;
+//import javax.persistence.EntityManagerFactory;
+//
+//import org.junit.jupiter.api.Test;
+//import org.springframework.boot.test.context.SpringBootTest;
+//import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+//
+//import com.doriv.api_company.models.Item;
+//import com.doriv.api_company.models.PriceReduction;
+//import com.doriv.api_company.models.Supplier;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-
-import com.doriv.api_company.models.Item;
-import com.doriv.api_company.models.PriceReduction;
-import com.doriv.api_company.models.Supplier;
-
-@SpringBootTest
+//@SpringBootTest
 class ApiCompanyApplicationTests {
 	
 //	private static AnnotationConfigApplicationContext context;

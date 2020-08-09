@@ -36,9 +36,9 @@ public class ItemTests {
 		addValues();
 		insert();
 		tables();
-		print("INSERT");
-		update();
-		print("UPDATE");
+//		print("INSERT");
+//		update();
+//		print("UPDATE");
 //		delete();
 //		print("DELETE");
 	}
@@ -78,11 +78,11 @@ public class ItemTests {
 //		commit();
 //	}
 
-	private static void print(String action) {
-		System.out.println("-------" + action + "-------");
-		System.out.println("Number of Items: " + items.size());
-		for (Item item : items) {
-			System.out.println(item.toString());
-		}
-	}
+//	private static void print(String action) {
+//		System.out.println("-------" + action + "-------");
+//		System.out.println("Number of Items: " + items.size());
+//		for (Item item : items) {
+//			System.out.println(item.toString());
+//		}
+//	}
 }

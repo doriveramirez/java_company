@@ -2,16 +2,18 @@ package com.doriv.api_company.models;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Table(name = "PRICE_REDUCTIONS")
@@ -19,9 +21,13 @@ public class PriceReduction implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(generator = "UUID")
+	@GenericGenerator(
+			name = "UUID",
+			strategy = "org.hibernate.id.UUIDGenerator"
+	)
 	@Column(name = "ID_PRICE_REDUCTION")
-	private Long id;
+	private UUID id;
 
 	@Column(name = "REDUCED_PRICE", precision = 2)
 	private double reducedPrice;
@@ -37,16 +43,17 @@ public class PriceReduction implements Serializable {
 	}
 
 	public PriceReduction(double reducedPrice, LocalDate startDate, Item item) {
+		this.id = UUID.randomUUID();
 		this.reducedPrice = reducedPrice;
 		this.startDate = startDate;
 		this.item = item;
 	}
 
-	public Long getId() {
+	public UUID getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(UUID id) {
 		this.id = id;
 	}
 
@@ -64,10 +71,6 @@ public class PriceReduction implements Serializable {
 
 	public void setStartDate(LocalDate startDate) {
 		this.startDate = startDate;
-	}
-
-	public Item getItem() {
-		return item;
 	}
 
 	public void setItem(Item item) {

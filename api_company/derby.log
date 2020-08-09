@@ -1,0 +1,13 @@
+----------------------------------------------------------------
+Sun Aug 09 14:04:58 WEST 2020:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-0173-d352-fbba-0000050d8050 
+on database directory memory:D:\doriv\Documents\git\java_company\api_company\2c334a2a-4cca-4684-aea4-265b82a22d45 with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@4e0e2f2a 
+Loaded from file:/C:/Users/doriv/.m2/repository/org/apache/derby/derby/10.14.2.0/derby-10.14.2.0.jar
+java.vendor=Oracle Corporation
+java.runtime.version=13.0.2+8
+user.dir=D:\doriv\Documents\git\java_company\api_company
+os.name=Windows 10
+os.arch=amd64
+os.version=10.0
+derby.system.home=null
+Database Class Loader started - derby.database.classpath=''

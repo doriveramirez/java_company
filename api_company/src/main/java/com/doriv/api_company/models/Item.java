@@ -4,13 +4,13 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -18,27 +18,33 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.GenericGenerator;
+
 @Entity
 @Table(name = "ITEMS")
 public class Item implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(generator = "UUID")
+	@GenericGenerator(
+			name = "UUID",
+			strategy = "org.hibernate.id.UUIDGenerator"
+	)
 	@Column(name = "ID_ITEM")
-	private int id;
+	private UUID id;
 
 	@Column(name = "CODE")
 	private int code;
 	
 	@Column(name = "DESCRIPTION")
-	private String Description;
+	private String description;
 
 	@Column(name = "PRICE")
-	private double Price;
+	private double price;
 
 	@Column(name = "STATE")
-	private boolean State;
+	private boolean state;
 
 	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinTable(name = "ITEMS_SUPPLIERS", joinColumns = { @JoinColumn(name = "ID_ITEM") }, inverseJoinColumns = {
@@ -61,21 +67,22 @@ public class Item implements Serializable {
 	
 	public Item(int code, String description, double price, boolean state, Set<Supplier> suppliers,
 			Set<PriceReduction> priceReductions, LocalDate creationDate, String creator) {
+		this.id = UUID.randomUUID();
 		this.code = code;
-		Description = description;
-		Price = price;
-		State = state;
+		this.description = description;
+		this.price = price;
+		this.state = state;
 		this.suppliers = suppliers;
 		this.priceReductions = priceReductions;
 		this.creationDate = creationDate;
 		this.creator = creator;
 	}
 
-	public int getId() {
+	public UUID getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(UUID id) {
 		this.id = id;
 	}
 
@@ -88,19 +95,19 @@ public class Item implements Serializable {
 	}
 
 	public double getPrice() {
-		return Price;
+		return price;
 	}
 
 	public void setPrice(double price) {
-		Price = price;
+		this.price = price;
 	}
 
 	public boolean isState() {
-		return State;
+		return state;
 	}
 
 	public void setState(boolean state) {
-		State = state;
+		this.state = state;
 	}
 
 	public Set<Supplier> getSuppliers() {
@@ -146,17 +153,17 @@ public class Item implements Serializable {
 	}
 
 	public String getDescription() {
-		return Description;
+		return description;
 	}
 
 	public void setDescription(String description) {
-		Description = description;
+		this.description = description;
 	}
 
 	@Override
 	public String toString() {
-		return "Item [id=" + id + ", code=" + code + ", Description=" + Description + ", Price=" + Price + ", State="
-				+ State + ", suppliers=" + suppliers + ", priceReductions=" + priceReductions + ", creationDate="
+		return "Item [id=" + id + ", code=" + code + ", description=" + description + ", price=" + price + ", state="
+				+ state + ", suppliers=" + suppliers + ", priceReductions=" + priceReductions + ", creationDate="
 				+ creationDate + ", creator=" + creator + "]";
 	}
 
