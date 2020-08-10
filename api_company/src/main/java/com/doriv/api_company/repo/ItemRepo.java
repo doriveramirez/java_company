@@ -16,6 +16,6 @@ public interface ItemRepo extends CrudRepository<Item, UUID> {
 	public List<Item> findByState(boolean state);
 	public List<Item> findByPrice(double price);
 	public List<Item> findByCreationDate(LocalDate creationDate);
-	public List<Item> findBySuppliers(Supplier supplier);
-	public List<Item> findByPriceReductions(PriceReduction priceReduction);
+//	public List<Item> findBySupplier(Supplier supplier);
+//	public List<Item> findByPriceReduction(PriceReduction priceReduction);
 }

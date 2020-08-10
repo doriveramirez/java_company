@@ -1,8 +1,8 @@
 package com.doriv.api_company.models;
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import javax.persistence.CascadeType;
@@ -36,14 +36,14 @@ public class Supplier implements Serializable {
 	@Column(name = "COUNTRY")
 	private String country;
 
-	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "suppliers")
+	@ManyToMany( mappedBy = "suppliers", cascade = CascadeType.PERSIST,fetch = FetchType.EAGER)
 	@Column(name = "SUPPLIERS")
-	private Set<Item> items = new HashSet<Item>();
+	private List<Item> items = new ArrayList<Item>();
 
 	public Supplier() {
 	}
 
-	public Supplier(String name, String country, Set<Item> items) {
+	public Supplier(String name, String country, List<Item> items) {
 		this.id = UUID.randomUUID();
 		this.name = name;
 		this.country = country;
@@ -74,18 +74,8 @@ public class Supplier implements Serializable {
 		this.country = country;
 	}
 
-	public Set<Item> getItems() {
-		return items;
-	}
-
-	public void setItems(Set<Item> items) {
+	public void setItems(List<Item> items) {
 		this.items = items;
-	}
-	
-	public void addItem(Item item) {
-		if (items.add(item)) {
-            item.addSupplier(this);
-        }
 	}
 
 	@Override

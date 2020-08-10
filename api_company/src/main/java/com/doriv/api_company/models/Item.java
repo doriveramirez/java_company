@@ -2,8 +2,8 @@ package com.doriv.api_company.models;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import javax.persistence.CascadeType;
@@ -19,6 +19,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "ITEMS")
@@ -46,15 +48,16 @@ public class Item implements Serializable {
 	@Column(name = "STATE")
 	private boolean state;
 
-	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
 	@JoinTable(name = "ITEMS_SUPPLIERS", joinColumns = { @JoinColumn(name = "ID_ITEM") }, inverseJoinColumns = {
 			@JoinColumn(name = "ID_SUPPLIER") })
 	@Column(name = "SUPPLIERS")
-	private Set<Supplier> suppliers = new HashSet<Supplier>();
+	private List<Supplier> suppliers = new ArrayList<Supplier>();
 
 	@OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 	@Column(name = "PRICE_REDUCTIONS")
-	private Set<PriceReduction> priceReductions = new HashSet<PriceReduction>();
+	private List<PriceReduction> priceReductions = new ArrayList<PriceReduction>();
 
 	@Column(name = "CREATION_DATE")
 	private LocalDate creationDate;
@@ -65,8 +68,8 @@ public class Item implements Serializable {
 	public Item() {
 	}
 	
-	public Item(int code, String description, double price, boolean state, Set<Supplier> suppliers,
-			Set<PriceReduction> priceReductions, LocalDate creationDate, String creator) {
+	public Item(int code, String description, double price, boolean state, List<Supplier> suppliers,
+			List<PriceReduction> priceReductions, LocalDate creationDate, String creator) {
 		this.id = UUID.randomUUID();
 		this.code = code;
 		this.description = description;
@@ -110,29 +113,23 @@ public class Item implements Serializable {
 		this.state = state;
 	}
 
-	public Set<Supplier> getSuppliers() {
+	public List<Supplier> getSuppliers() {
 		return suppliers;
 	}
 
-	public void setSuppliers(Set<Supplier> suppliers) {
+	public void setSuppliers(List<Supplier> suppliers) {
 		this.suppliers = suppliers;
-	}
-	
-	public void addSupplier(Supplier supplier) {
-		if (suppliers.add(supplier)) {
-	        supplier.addItem(this);
-	      }
 	}
 	
 	public void addPriceReduction(PriceReduction priceReduction) {
 		this.priceReductions.add(priceReduction);
 	}
 
-	public Set<PriceReduction> getPriceReductions() {
+	public List<PriceReduction> getPriceReductions() {
 		return priceReductions;
 	}
 
-	public void setPriceReductions(Set<PriceReduction> priceReductions) {
+	public void setPriceReductions(List<PriceReduction> priceReductions) {
 		this.priceReductions = priceReductions;
 	}
 

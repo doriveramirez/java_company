@@ -10,38 +10,40 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.doriv.api_company.models.Supplier;
 import com.doriv.api_company.services.SupplierService;
 
 @RestController
+@RequestMapping("/api/suppliers")
 public class SupplierController {
 
 	@Autowired
 	private SupplierService service;
 	
-	@GetMapping("/suppliers")
+	@GetMapping()
 	public List<Supplier> getAllSuppliers() {
 		return service.getAll();
 	}
 	
-	@GetMapping("/suppliers/{id}")
+	@GetMapping("/{id}")
 	public Supplier getSupplier(@PathVariable UUID id) {
 		return service.get(id);
 	}
 	
-	@PostMapping("/suppliers")
+	@PostMapping()
 	public void postSupplier(@RequestBody Supplier supplier) {
 		service.add(supplier);
 	}
 	
-	@PutMapping("/suppliers/{id}")
+	@PutMapping("/{id}")
 	public void putSupplier(@RequestBody Supplier supplier, @PathVariable UUID id) {
 		service.update(id, supplier);
 	}
 	
-	@DeleteMapping("/suppliers/{id}")
+	@DeleteMapping("/{id}")
 	public void deleteSupplier(@PathVariable UUID id) {
 		service.drop(id);
 	}
