@@ -44,7 +44,6 @@ public class Supplier implements Serializable {
 	}
 
 	public Supplier(String name, String country, List<Item> items) {
-		this.id = UUID.randomUUID();
 		this.name = name;
 		this.country = country;
 		this.items = items;

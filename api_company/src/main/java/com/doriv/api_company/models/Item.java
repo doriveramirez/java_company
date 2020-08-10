@@ -70,7 +70,6 @@ public class Item implements Serializable {
 	
 	public Item(int code, String description, double price, boolean state, List<Supplier> suppliers,
 			List<PriceReduction> priceReductions, LocalDate creationDate, String creator) {
-		this.id = UUID.randomUUID();
 		this.code = code;
 		this.description = description;
 		this.price = price;

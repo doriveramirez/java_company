@@ -43,7 +43,6 @@ public class PriceReduction implements Serializable {
 	}
 
 	public PriceReduction(double reducedPrice, LocalDate startDate, Item item) {
-		this.id = UUID.randomUUID();
 		this.reducedPrice = reducedPrice;
 		this.startDate = startDate;
 		this.item = item;
