@@ -27,11 +27,11 @@ public class RegisterController {
 	@PostMapping("/register")
 	public String registerAction(@Valid User user, BindingResult br, Model model) {
 		if(br.hasErrors()) {
-			return "views/register";
+			return "register";
 		}
 		if(service.isUserPresent(user.getUsername())) {
 			model.addAttribute("exist", true);
-			return "views/register";
+			return "register";
 		}
 		service.createUser(user);
 		return "views/home";
