@@ -8,17 +8,17 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class PageController {
 	@RequestMapping({ "/", "/home", "/index" })
 	public String home() {
-		return "home.jsp";
+		return "views/home";
 	}
 	
 	@RequestMapping("/login")
 	public String login() {
-		return "login.jsp";
+		return "views/login";
 	}
 	
 	@RequestMapping("/logout_success")
 	public String logout() {
-		return "logout.jsp";
+		return "views/logout";
 	}
 	
 	@RequestMapping("/test")

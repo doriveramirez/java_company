@@ -84,8 +84,8 @@ public class Item implements Serializable {
 		return id;
 	}
 
-	public void setId(UUID id) {
-		this.id = id;
+	public void setId() {
+		this.id = UUID.randomUUID();
 	}
 
 	public int getCode() {

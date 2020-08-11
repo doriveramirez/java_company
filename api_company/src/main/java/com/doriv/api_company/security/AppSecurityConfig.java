@@ -29,11 +29,27 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter{
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.csrf().disable().authorizeRequests().antMatchers("/login").permitAll().and()
-		.formLogin().loginPage("/login").permitAll().and()
-		.logout().invalidateHttpSession(true).clearAuthentication(true)
-		.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-		.logoutSuccessUrl("/logout_success").permitAll();
+		http.authorizeRequests()
+			.antMatchers("/", "/home", "/index", "/login", "/register").permitAll()
+			.antMatchers("/api/**").hasAnyAuthority("SUPER_USER","ADMIN_USER","SITE_USER")
+			.anyRequest().authenticated()
+			.and()
+			.csrf().disable().formLogin()
+			.loginPage("/login")
+			.failureUrl("/login_error")
+			.defaultSuccessUrl("/")
+			.and()
+			.logout()
+			.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+			.logoutSuccessUrl("/")
+			.and()
+			.exceptionHandling()
+			.accessDeniedPage("/access_denied");
+//		http.csrf().disable().authorizeRequests().antMatchers("/login").permitAll().and()
+//		.formLogin().loginPage("/login").permitAll().and()
+//		.logout().invalidateHttpSession(true).clearAuthentication(true)
+//		.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+//		.logoutSuccessUrl("/logout_success").permitAll();
 	}
 	
 }

@@ -17,8 +17,8 @@ import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
-@Table(name = "SUPPLIERS")
-public class Supplier implements Serializable {
+@Table(name = "ROLES")
+public class Role implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -27,27 +27,15 @@ public class Supplier implements Serializable {
 			name = "UUID",
 			strategy = "org.hibernate.id.UUIDGenerator"
 	)
-	@Column(name = "ID_SUPPLIER")
+	@Column(name = "ID_USER")
 	private UUID id;
 
 	@Column(name = "NAME")
 	private String name;
 
-	@Column(name = "COUNTRY")
-	private String country;
-
-	@ManyToMany( mappedBy = "suppliers", cascade = CascadeType.PERSIST,fetch = FetchType.EAGER)
-	@Column(name = "ITEMS")
-	private List<Item> items = new ArrayList<Item>();
-
-	public Supplier() {
-	}
-
-	public Supplier(String name, String country, List<Item> items) {
-		this.name = name;
-		this.country = country;
-		this.items = items;
-	}
+	@ManyToMany( mappedBy = "roles", cascade = CascadeType.PERSIST,fetch = FetchType.EAGER)
+	@Column(name = "USERS")
+	private List<User> users = new ArrayList<User>();
 
 	public UUID getId() {
 		return id;
@@ -55,6 +43,10 @@ public class Supplier implements Serializable {
 
 	public void setId() {
 		this.id = UUID.randomUUID();
+	}
+
+	public void setId(UUID id) {
+		this.id = id;
 	}
 
 	public String getName() {
@@ -65,22 +57,28 @@ public class Supplier implements Serializable {
 		this.name = name;
 	}
 
-	public String getCountry() {
-		return country;
+	public List<User> getUsers() {
+		return users;
 	}
 
-	public void setCountry(String country) {
-		this.country = country;
+	public void setUsers(List<User> users) {
+		this.users = users;
 	}
 
-	public void setItems(List<Item> items) {
-		this.items = items;
+	public Role() {
+		super();
 	}
 
-	@Override
-	public String toString() {
-		return "Supplier [id=" + id + ", name=" + name + ", country=" + country + "]";
+	public Role(String name, List<User> users) {
+		super();
+		this.name = name;
+		this.users = users;
 	}
 
+	public Role(String name) {
+		super();
+		this.name = name;
+	}
+
+	
 }
-

@@ -52,8 +52,8 @@ public class PriceReduction implements Serializable {
 		return id;
 	}
 
-	public void setId(UUID id) {
-		this.id = id;
+	public void setId() {
+		this.id = UUID.randomUUID();
 	}
 
 	public double getReducedPrice() {
