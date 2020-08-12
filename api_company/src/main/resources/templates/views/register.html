@@ -9,6 +9,8 @@
 <body>
 	<h1>Register</h1>
 	<div layout:fragment="content" class="container mySpace">
+		<p class="text text-center">End the username with "_admin" to be
+			an admin. (Username will be registered without the _admin anyways)</p>
 		<div class="alert alert-info" th:if="${exist}">
 			<p class="text text-center">This username already exist</p>
 		</div>
@@ -18,14 +20,16 @@
 					type='text' class="form-control-label" th:field='*{username}'
 					id="username">
 				<div class="text text-danger"
-					th:if="${#fields.hasErrors('username')}">Error: empty username</div>
+					th:if="${#fields.hasErrors('username')}">Error: empty
+					username</div>
 			</div>
 			<div class="form-group">
 				<label for="password" class="form-control-label">Password</label> <input
 					type='password' class="form-control-label" th:field='*{password}'
 					id="password">
 				<div class="text text-danger"
-					th:if="${#fields.hasErrors('password')}">Error: empty password</div>
+					th:if="${#fields.hasErrors('password')}">Error: empty
+					password</div>
 			</div>
 			<input type="submit" value="Submit" class="btn btn-primary" />
 		</form>

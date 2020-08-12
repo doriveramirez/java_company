@@ -1,6 +1,7 @@
 package com.doriv.api_company.controllers;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -9,11 +10,6 @@ public class PageController {
 	@RequestMapping({ "/", "/home", "/index" })
 	public String home() {
 		return "views/home";
-	}
-	
-	@RequestMapping("/login")
-	public String login() {
-		return "views/login";
 	}
 	
 	@RequestMapping("/logout_success")

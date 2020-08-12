@@ -1,5 +1,6 @@
 package com.doriv.api_company.controllers;
 
+import javax.swing.text.View;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,20 +22,40 @@ public class RegisterController {
 	@GetMapping("/register")
 	public String register(Model model) {
 		model.addAttribute("user", new User());
+		boolean role = false;
+		model.addAttribute("role", role);
 		return "views/register";
 	}
 	
 	@PostMapping("/register")
 	public String registerAction(@Valid User user, BindingResult br, Model model) {
 		if(br.hasErrors()) {
-			return "register";
+			return "views/register";
 		}
-		if(service.isUserPresent(user.getUsername())) {
+		String role = "USER";
+		String username = user.getUsername();
+		if (username.contains("_admin")) {
+			String[] strings = username.split("_");
+			username = strings[0];
+			user.setUsername(username);
+			role = "ADMIN";
+		}
+		if(service.isUserPresent(username)) {
 			model.addAttribute("exist", true);
-			return "register";
+			return "views/register";
 		}
-		service.createUser(user);
-		return "views/home";
+		service.createUser(user, role);
+//		if(model.getAttribute("role").equals(true)) {
+//			service.createUser(user,"ADMIN");
+//		} else {
+//			service.createUser(user, "USER");
+//		}
+		return "views/login";
+	}
+	
+	@GetMapping("/login")
+	public String login() {
+		return "views/login";
 	}
 	
 }
