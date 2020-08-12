@@ -45,12 +45,7 @@ public class RegisterController {
 			return "views/register";
 		}
 		service.createUser(user, role);
-//		if(model.getAttribute("role").equals(true)) {
-//			service.createUser(user,"ADMIN");
-//		} else {
-//			service.createUser(user, "USER");
-//		}
-		return "views/login";
+		return "views/home";
 	}
 	
 	@GetMapping("/login")

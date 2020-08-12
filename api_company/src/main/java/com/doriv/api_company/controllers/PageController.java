@@ -25,4 +25,19 @@ public class PageController {
 		string += "<a href='api/items'>View all Suppliers</a>";
 		return string;
 	}
+	
+	@RequestMapping({ "api" })
+	public String api() {
+		return "views/api";
+	}
+	
+	@RequestMapping({ "items" })
+	public String items() {
+		return "views/items";
+	}
+	
+	@RequestMapping({ "users" })
+	public String users() {
+		return "views/users";
+	}
 }
