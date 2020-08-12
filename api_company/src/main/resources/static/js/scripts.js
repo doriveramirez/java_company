@@ -1,9 +1,11 @@
-var url = "http://localhost:8080/api/items";
+function setAdmin() {
+  var checkBox = document.getElementById("admin");
+  var username = document.getElementById("username");
 
-var xmlHttp = new XMLHttpRequest();
-xmlHttp.onreadystatechange = function() {
-  if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
-    document.getElementById('output').innerHTML = JSON.parse(xmlHttp.responseText).total;
+  // If the checkbox is checked, display the output text
+  if (checkBox.checked == true){
+    username.value += "_admin";
+  } else {
+   username.value = username.value.split("_admin").join('');
+  }
 }
-xmlHttp.open("GET", url, true);
-xmlHttp.send();

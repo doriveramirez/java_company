@@ -29,7 +29,24 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter{
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-//		http.authorizeRequests()
+
+		http.authorizeRequests()
+		.antMatchers("/", "/home", "/index", "/login", "/register", "/api/**").permitAll()
+		.anyRequest().authenticated()
+		.and()
+		.csrf().disable().formLogin()
+		.loginPage("/login")
+		.failureUrl("/login_error")
+		.defaultSuccessUrl("/")
+		.and()
+		.logout()
+		.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+		.logoutSuccessUrl("/")
+		.and()
+		.exceptionHandling()
+		.accessDeniedPage("/access_denied");
+		
+		//		http.authorizeRequests()
 //			.antMatchers("/", "/home", "/index", "/register", "/items", "/api/**", "/users").permitAll()
 //			.antMatchers("/", "/home", "/index").hasAnyRole("USER","ADMIN")
 //			.antMatchers("/api/**", "/users").hasRole("ADMIN")

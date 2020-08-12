@@ -1,38 +1,52 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeLeaf/layout"
 	layout:decorate="~{fragments/main_layout}">
+
 <head>
-<meta charset="ISO-8859-1">
-<title>Registration</title>
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Login</title>
+<link
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
+	rel="stylesheet">
+<link
+	href="https://getbootstrap.com/docs/4.0/examples/signin/signin.css"
+	rel="stylesheet" />
 </head>
 <body>
-	<h1>Register</h1>
-	<div layout:fragment="content" class="container mySpace">
-		<p class="text text-center">End the username with "_admin" to be
-			an admin. (Username will be registered without the _admin anyways)</p>
-		<div class="alert alert-info" th:if="${exist}">
-			<p class="text text-center">This username already exist</p>
-		</div>
-		<form th:action="@{/register}" th:object="${user}" method="post">
-			<div class="form-group">
-				<label for="username" class="form-control-label">Username</label> <input
-					type='text' class="form-control-label" th:field='*{username}'
-					id="username">
-				<div class="text text-danger"
-					th:if="${#fields.hasErrors('username')}">Error: empty
-					username</div>
+	<div class="container">
+		<form class="form-signin" th:action="@{/register}" th:object="${user}" method="post">
+			<a href="/">back</a>
+			<h2 class="form-signin-heading">Register</h2>
+			<p>
+			End the username with "_admin" to be
+			an admin. (Username will be registered without the _admin anyways)
+				<label for="username" class="sr-only">Username</label> <input
+					type='text' th:field='*{username}' id="username"
+					class="form-control" placeholder="Username" required autofocus>
+			</p>
+			<div class="alert alert-info" th:if="${exist}">
+				<p class="text text-center">This username already exist</p>
 			</div>
-			<div class="form-group">
-				<label for="password" class="form-control-label">Password</label> <input
-					type='password' class="form-control-label" th:field='*{password}'
-					id="password">
-				<div class="text text-danger"
-					th:if="${#fields.hasErrors('password')}">Error: empty
-					password</div>
-			</div>
-			<input type="submit" value="Submit" class="btn btn-primary" />
+			<p>
+				<label for="password" class="sr-only">Password</label> <input
+					type='password' th:field='*{password}' id="password"
+					class="form-control" placeholder="Password" required>
+			</p>
+			<p>
+				<input name="admin" id="admin" onclick="setAdmin()" type="checkbox"/>
+				Wanna be admin?
+			</p>
+			
+			<input name="_csrf" type="hidden"
+				value="6220dd4b-9331-4d81-a571-2b8c1ce4dc47" />
+			<button class="btn btn-lg btn-primary btn-block" type="submit">Sign
+				up</button>
 		</form>
 	</div>
+	<script src="js/scripts.js"></script>
 </body>
+
 </html>
