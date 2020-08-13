@@ -10,5 +10,6 @@ import com.doriv.api_company.models.Supplier;
 
 public interface SupplierRepo extends CrudRepository<Supplier, UUID> {
 	public List<Supplier> findByItems(Item item);
+	public List<Supplier> findByName(String name);
 }
 

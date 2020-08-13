@@ -2,7 +2,7 @@ body{
     background-color:#dee2e6;
   
 }
- table.dataTable thead {
+table thead {
     background: #007bff;
     color:white;
 }

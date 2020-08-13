@@ -48,4 +48,15 @@ public class SupplierController {
 		service.drop(id);
 	}
 	
+	@GetMapping("/name/{name}")
+	public Supplier findByName(@PathVariable String name) {
+		Supplier supplier = service.findByName(name).get(0);
+		return supplier;
+	}
+	
+	@GetMapping("/idItem/{id}")
+	public List<Supplier> findByIdItem(@PathVariable UUID id) {
+		return service.findByIdItem(id);
+	}
+	
 }

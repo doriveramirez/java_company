@@ -28,7 +28,7 @@ $(document).ready(function() {
 			"data": "state"
 		},
 		{
-			"defaultContent": "<div class='text-center'><div class='btn-group'><button class='btn btn-primary btn-sm btnEdit'><i class='material-icons'>edit</i></button><button class='btn btn-danger btn-sm btnDelete'><i class='material-icons'>delete</i></button></div></div>"
+			"defaultContent": "<div class='text-center'><div class='btn-group'><button class='btn btn-primary btn-sm btnView'><i class='material-icons'>preview</i></button><button class='btn btn-primary btn-sm btnEdit'><i class='material-icons'>edit</i></button><button class='btn btn-danger btn-sm btnDelete'><i class='material-icons'>delete</i></button></div></div>"
 		}]
 	});
 
@@ -132,6 +132,12 @@ $(document).ready(function() {
 				}
 			});
 		}
+	});
+	
+	$(document).on("click", ".btnView", function() {
+		console.log("Hola");
+		var id = $(this).closest('tr').find('td:eq(0)').text();
+		window.location.href = "item_" + id;
 	});
 	
 	$('.btnReset').click(function(){

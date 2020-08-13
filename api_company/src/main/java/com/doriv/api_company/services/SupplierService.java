@@ -7,7 +7,9 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.doriv.api_company.models.Item;
 import com.doriv.api_company.models.Supplier;
+import com.doriv.api_company.repo.ItemRepo;
 import com.doriv.api_company.repo.SupplierRepo;
 
 @Service
@@ -15,6 +17,9 @@ public class SupplierService {
 
 	@Autowired
 	private SupplierRepo repo;
+	
+	@Autowired
+	private ItemService itemService;
 
 	public List<Supplier> getAll() {
 		List<Supplier> suppliers = new ArrayList<>();
@@ -36,6 +41,15 @@ public class SupplierService {
 
 	public void drop(UUID id) {
 		repo.deleteById(id);
+	}
+	
+	public List<Supplier> findByName(String name) {
+		return repo.findByName(name);
+	}
+	
+	public List<Supplier> findByIdItem(UUID id) {
+		Item item = itemService.get(id);
+		return repo.findByItems(item);
 	}
 	
 }
