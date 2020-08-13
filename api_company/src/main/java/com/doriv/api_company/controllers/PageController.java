@@ -1,7 +1,7 @@
 package com.doriv.api_company.controllers;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -34,6 +34,11 @@ public class PageController {
 	@RequestMapping({ "items" })
 	public String items() {
 		return "views/items";
+	}
+	
+	@RequestMapping({ "item_{id}" })
+	public String item(@PathVariable("id") String id) {
+		return "views/item";
 	}
 	
 	@RequestMapping({ "users" })

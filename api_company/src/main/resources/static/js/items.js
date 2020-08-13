@@ -120,8 +120,8 @@ $(document).ready(function() {
 	$(document).on("click", ".btnDelete", function() {
 		row = $(this);
 		id = $(this).closest('tr').find('td:eq(0)').text();
-		var respuesta = confirm("Do you want to delete the item with id " + id + "?");
-		if (respuesta) {
+		var agree = confirm("Do you want to delete the item with id " + id + "?");
+		if (agree) {
 			$.ajax({
 				url: "api/items/" + id,
 				type: "DELETE",
