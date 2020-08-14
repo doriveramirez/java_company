@@ -3,8 +3,25 @@ $(document).ready(function() {
 	var idItem = window.location.pathname.split("/item_").join('');
 	var item;
 	$('#idItem').val(idItem);
+	var belongs = [];
+	var index = 0;
+	var suppliers = [];
 
 	$.ajax({
+		async: false,
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		url: "api/suppliers/",
+		type: "GET",
+		datatype: "json",
+		success: function(data) {
+			suppliers = data;
+		}
+	});
+
+	$.ajax({
+		async: false,
 		headers: {
 			'Content-Type': 'application/json'
 		},
@@ -20,6 +37,21 @@ $(document).ready(function() {
 			$('#creationDate').text(data.creationDate);
 			$('#creator').text(data.creator);
 			$('#state').text(data.state);
+			var loop;
+			console.log(suppliers.length);
+			for (var i = 0; i < item.suppliers.length; i++) {
+				loop = false;
+				for (var x = 0; x < suppliers.length; x++) {
+					if (item.suppliers[i].id == suppliers[x].id) {
+						loop = true;
+					}
+				}
+				if (loop) {
+					belongs[i] = true;
+				} else {
+					belongs[i] = false;
+				}
+			}
 		}
 	});
 
@@ -59,7 +91,6 @@ $(document).ready(function() {
 			startDate: startDate,
 			item: item
 		};
-		console.log(JSON.stringify(data))
 		if (idPriceReduction != "") {
 			$.ajax({
 				headers: {
@@ -91,8 +122,7 @@ $(document).ready(function() {
 	});
 
 	$("#btnNewPriceReduction").click(function() {
-		idPriceReduction = null;
-		$("#formItem").trigger("reset");
+		$("#formPriceReductions").trigger("reset");
 		$(".modal-header").css("background-color", "#17a2b8");
 		$(".modal-header").css("color", "white");
 		$(".modal-title").text("New Price Reduction");
@@ -151,7 +181,16 @@ $(document).ready(function() {
 			}, {
 				"data": "country"
 			}, {
-				"defaultContent": "<div class='text-center'><i class='material-icons belongs'>clear</i><div class='btn-group'><button class='btn btn-primary btn-sm btnUpdateMTM'><i class='material-icons'>add_box</i></button></div>"
+				"defaultContent": "asd",
+				"render": function(type, row, meta) {
+					if (belongs[index] == true) {
+						index++;
+						return "<div class='text-center'><i class='material-icons'>done_outline</i>";
+					} else {
+						index++;
+						return "<div class='text-center'><div class='btn-group'><button class='btn btn-primary btn-sm btnUpdateMTM'><i class='material-icons'>add_box</i></button></div></div>"
+					}
+				}
 			},
 			{
 				"defaultContent": "<div class='text-center'><div class='btn-group'><button class='btn btn-primary btn-sm btnEditSupplier'><i class='material-icons'>edit</i></button><button class='btn btn-danger btn-sm btnDeleteSupplier'><i class='material-icons'>delete</i></button></div></div>"
@@ -182,6 +221,7 @@ $(document).ready(function() {
 				data: JSON.stringify(data),
 				success: function(data) {
 					suppliersList.ajax.reload(null, false);
+					location.reload();
 				}
 			});
 		} else {
@@ -195,6 +235,7 @@ $(document).ready(function() {
 				data: JSON.stringify(data),
 				success: function(data) {
 					suppliersList.ajax.reload(null, false);
+					location.reload();
 				}
 			});
 		}
@@ -202,7 +243,6 @@ $(document).ready(function() {
 	});
 
 	$("#btnNewSupplier").click(function() {
-		idSupplier = null;
 		$("#formSuppliers").trigger("reset");
 		$(".modal-header").css("background-color", "#17a2b8");
 		$(".modal-header").css("color", "white");
@@ -236,33 +276,23 @@ $(document).ready(function() {
 			type: "GET",
 			datatype: "json",
 			success: function(item) {
+				var find = false;
 				for (var i = 0; i < item.suppliers.length; i++) {
 					if (item.suppliers[i].id == idSupplier) {
-						var agree = confirm("Do you want to unlink the Supplier with id " + idSupplier + " of the item with id " + idItem + "?");
-						if (agree) {
-							for (var i = 0; i < item.suppliers.length; i++) {
-								if (item.suppliers[i].id == idSupplier) {
-									item.suppliers[i] = null;
-								}
-							}
-							$.ajax({
-								headers: {
-									'Content-Type': 'application/json'
-								},
-								url: "api/items/" + idItem,
-								type: "PUT",
-								datatype: "json",
-								data: JSON.stringify(item),
-								success: function(item) {
-									console.log("adios");
-								}
-							});
-						}
-					} else {
-						deleteSupplier();
+						find = true;
 					}
 				}
-				if (item.suppliers.length == 0) {
+				if (find) {
+					var agree = confirm("Do you want to unlink the Supplier with id " + idSupplier + " of the item with id " + idItem + "?");
+					if (agree) {
+						for (var i = 0; i < item.suppliers.length; i++) {
+							if (item.suppliers[i].id == idSupplier) {
+								item.suppliers[i] = null;
+							}
+						}
+						updateItem(item);
+					}
+				} else {
 					deleteSupplier();
 				}
 			}
@@ -280,15 +310,32 @@ $(document).ready(function() {
 		idSupplier = rowSupplier.find('td:eq(0)').text();
 		name = rowSupplier.find('td:eq(1)').text();
 		country = rowSupplier.find('td:eq(2)').text();
-		var data = {
-			id: idSupplier,
-			name: name,
-			country: country,
-			item: null
-		};
-		item.suppliers.push(data);
-		console.log(item.suppliers);
-		console.log(item);
+		var agree = confirm("Do you want to link the Supplier with id " + idSupplier + " of the item with id " + idItem + "?");
+		if (agree) {
+			var data = createSupplier();
+			item.suppliers.push(data);
+			updateItem(item);
+			rowSupplier.find('td:eq(3)').html("<div class='text-center'><i class='material-icons'>done_outline</i>")
+		}
+	});
+
+	function deleteSupplier() {
+		var agree = confirm("Do you want to delete the Supplier with id " + idSupplier + "?");
+		if (agree) {
+			$.ajax({
+				url: "api/suppliers/" + idSupplier,
+				type: "DELETE",
+				datatype: "json",
+				data: { id: idSupplier },
+				success: function() {
+					suppliersList.ajax.reload(null, false);
+					location.reload();
+				}
+			});
+		}
+	}
+
+	function updateItem(item) {
 		$.ajax({
 			headers: {
 				'Content-Type': 'application/json'
@@ -298,29 +345,21 @@ $(document).ready(function() {
 			datatype: "json",
 			data: JSON.stringify(item),
 			success: function(item) {
-				$("#belongs").val(done_outline);
-			}
-		});
-	});
-
-});
-
-function deleteSupplier() {
-	var agree = confirm("Do you want to delete the Supplier with id " + idSupplier + "?");
-	if (agree) {
-		$.ajax({
-			url: "api/suppliers/" + idSupplier,
-			type: "DELETE",
-			datatype: "json",
-			data: { id: idSupplier },
-			success: function() {
-				/*suppliersList.rowSupplier(rowSupplier.parents('tr')).remove().draw();*/
-				console.log("hola");
-				suppliersList.ajax.reload(null, false);
 			}
 		});
 	}
-}
+
+	function createSupplier() {
+		var data = {
+			id: idSupplier,
+			name: name,
+			country: country,
+			item: null
+		};
+		return data;
+	}
+
+});
 
 Date.prototype.toDateInputValue = (function() {
 	var local = new Date(this);

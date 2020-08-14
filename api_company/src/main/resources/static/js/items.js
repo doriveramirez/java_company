@@ -87,8 +87,7 @@ $(document).ready(function() {
 	}); 
 
 	$("#btnNew").click(function() {
-		id_item = null;
-		$("#formItem").trigger("reset");
+		$("#formItems").trigger("reset");
 		$(".modal-header").css("background-color", "#17a2b8");
 		$(".modal-header").css("color", "white");
 		$(".modal-title").text("New item");
