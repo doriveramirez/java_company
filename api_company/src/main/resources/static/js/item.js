@@ -139,7 +139,7 @@ $('.btnResetPriceReduction').click(function() {
 
 var suppliersList = $('#suppliersList').DataTable({
 	ajax: {
-		url: "/api/suppliers/idItem/" + idItem,
+		url: "/api/suppliers/",
 		dataSrc: ''
 	},
 	"columns": [
@@ -170,86 +170,32 @@ $('#formSuppliers').submit(function(e) {
 		item: item
 	};
 	if (idSupplier != "") {
-		console.log(1)
-		$.ajax({
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			url: "api/suppliers/" + idSupplier,
-			type: "PUT",
-			datatype: "json",
-			data: JSON.stringify(data),
-			success: function(data) {
-				suppliersList.ajax.reload(null, false);
-			}
-		});
-	} else {
-		console.log(2)
-		$.ajax({
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			url: "api/suppliers/name/" + name,
-			type: "GET",
-			datatype: "json",
-			success: function(data) {
-				idSupplier = data.id;
-				var data = {
-					id: idSupplier,
-					name: name,
-					country: country,
-					item: item
-				};
-				console.log(3)
-				$.ajax({
-					headers: {
-						'Content-Type': 'application/json'
-					},
-					url: "api/suppliers/" + idSupplier,
-					type: "PUT",
-					datatype: "json",
-					data: JSON.stringify(data),
-					success: function(data) {
-						console.log(data.id);
-						suppliersList.ajax.reload(null, false);
-					}
-				});
-			},
-			error: function(XMLHttpRequest, textStatus, errorThrown) {
-				console.log(4)
-				data.item = null;
-				console.log(JSON.stringify(data));
-				console.log("pasa");
-				item.suppliers.push(data);
-				console.log(5)
-				console.log(JSON.stringify(item));
-				$.ajax({
-					headers: {
-						'Content-Type': 'application/json'
-					},
-					url: "api/items/" + idItem,
-					type: "PUT",
-					datatype: "json",
-					data: JSON.stringify(item),
-					success: function(item) {
-						console.log(item.suppliers);
-						suppliersList.ajax.reload(null, false);
-					}
-				});
-				/*$.ajax({
-					headers: {
-						'Content-Type': 'application/json'
-					},
-					url: "api/suppliers/",
-					type: "POST",
-					datatype: "json",
-					data: JSON.stringify(data),
-					success: function(data) {
-					}
-				});*/
-			}
-		});
-	}
+			$.ajax({
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				url: "api/suppliers/" + idSupplier,
+				type: "PUT",
+				datatype: "json",
+				data: JSON.stringify(data),
+				success: function(data) {
+					suppliersList.ajax.reload(null, false);
+				}
+			});
+		} else {
+			$.ajax({
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				url: "api/suppliers/",
+				type: "POST",
+				datatype: "json",
+				data: JSON.stringify(data),
+				success: function(data) {
+					suppliersList.ajax.reload(null, false);
+				}
+			});
+		}
 	$('#suppliersCRUD').modal('hide');
 });
 
@@ -282,7 +228,6 @@ $(document).on("click", ".btnDeleteSupplier", function() {
 	idSupplier = $(this).closest('tr').find('td:eq(0)').text();
 	var agree = confirm("Do you want to delete the Price reduction with id " + idSupplier + "?");
 	if (agree) {
-		console.log(idSupplier);
 		$.ajax({
 			url: "api/suppliers/" + idSupplier,
 			type: "DELETE",
