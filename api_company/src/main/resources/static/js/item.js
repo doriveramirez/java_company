@@ -78,7 +78,7 @@ $(document).ready(function() {
 				headers: {
 					'Content-Type': 'application/json'
 				},
-				url: "api/items/"  + idItem + "/priceReductions/",
+				url: "api/items/" + idItem + "/priceReductions/",
 				type: "POST",
 				datatype: "json",
 				data: JSON.stringify(data),
@@ -128,48 +128,50 @@ $(document).ready(function() {
 					itemListPriceReductions.rowPriceReduction(rowPriceReduction.parents('tr')).remove().draw();
 				}
 			});
-}
+		}
 	});
 
-$('.btnResetPriceReduction').click(function() {
-	$("#idPriceReduction").val(null);
-	$("#reducedPrice").val("");
-	$('#startDate').val(new Date().toDateInputValue());
-});
+	$('.btnResetPriceReduction').click(function() {
+		$("#idPriceReduction").val(null);
+		$("#reducedPrice").val("");
+		$('#startDate').val(new Date().toDateInputValue());
+	});
 
-var suppliersList = $('#suppliersList').DataTable({
-	ajax: {
-		url: "/api/suppliers/",
-		dataSrc: ''
-	},
-	"columns": [
-		{
-			"data": "id"
+	var suppliersList = $('#suppliersList').DataTable({
+		ajax: {
+			url: "/api/suppliers/",
+			dataSrc: ''
 		},
-		{
-			"data": "name"
-		}, {
-			"data": "country"
-		},
-		{
-			"defaultContent": "<div class='text-center'><div class='btn-group'><button class='btn btn-primary btn-sm btnEditSupplier'><i class='material-icons'>edit</i></button><button class='btn btn-danger btn-sm btnDeleteSupplier'><i class='material-icons'>delete</i></button></div></div>"
-		}]
-});
+		"columns": [
+			{
+				"data": "id"
+			},
+			{
+				"data": "name"
+			}, {
+				"data": "country"
+			}, {
+				"defaultContent": "<div class='text-center'><i class='material-icons belongs'>clear</i><div class='btn-group'><button class='btn btn-primary btn-sm btnUpdateMTM'><i class='material-icons'>add_box</i></button></div>"
+			},
+			{
+				"defaultContent": "<div class='text-center'><div class='btn-group'><button class='btn btn-primary btn-sm btnEditSupplier'><i class='material-icons'>edit</i></button><button class='btn btn-danger btn-sm btnDeleteSupplier'><i class='material-icons'>delete</i></button></div></div>"
+			}]
+	});
 
-var rowSupplier;
+	var rowSupplier;
 
-$('#formSuppliers').submit(function(e) {
-	e.preventDefault();
-	idSupplier = $.trim($('#idSupplier').val());
-	name = $.trim($('#name').val());
-	country = $.trim($('#country').val());
-	var data = {
-		id: idSupplier,
-		name: name,
-		country: country,
-		item: item
-	};
-	if (idSupplier != "") {
+	$('#formSuppliers').submit(function(e) {
+		e.preventDefault();
+		idSupplier = $.trim($('#idSupplier').val());
+		name = $.trim($('#name').val());
+		country = $.trim($('#country').val());
+		var data = {
+			id: idSupplier,
+			name: name,
+			country: country,
+			item: item
+		};
+		if (idSupplier != "") {
 			$.ajax({
 				headers: {
 					'Content-Type': 'application/json'
@@ -196,37 +198,115 @@ $('#formSuppliers').submit(function(e) {
 				}
 			});
 		}
-	$('#suppliersCRUD').modal('hide');
+		$('#suppliersCRUD').modal('hide');
+	});
+
+	$("#btnNewSupplier").click(function() {
+		idSupplier = null;
+		$("#formSuppliers").trigger("reset");
+		$(".modal-header").css("background-color", "#17a2b8");
+		$(".modal-header").css("color", "white");
+		$(".modal-title").text("New Supplier");
+		$('#suppliersCRUD').modal('show');
+	});
+
+	$(document).on("click", ".btnEditSupplier", function() {
+		rowSupplier = $(this).closest("tr");
+		idSupplier = rowSupplier.find('td:eq(0)').text();
+		name = rowSupplier.find('td:eq(1)').text();
+		country = rowSupplier.find('td:eq(2)').text();
+		$("#idItem").val(idItem);
+		$("#idSupplier").val(idSupplier);
+		$("#name").val(name);
+		$("#country").val(country);
+		$(".modal-header").css("background-color", "#007bff");
+		$(".modal-header").css("color", "white");
+		$(".modal-title").text("Edit Price Reduction");
+		$('#suppliersCRUD').modal('show');
+	});
+
+	$(document).on("click", ".btnDeleteSupplier", function() {
+		rowSupplier = $(this).closest("tr");
+		idSupplier = $(this).closest('tr').find('td:eq(0)').text();
+		$.ajax({
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			url: "api/items/" + idItem,
+			type: "GET",
+			datatype: "json",
+			success: function(item) {
+				for (var i = 0; i < item.suppliers.length; i++) {
+					if (item.suppliers[i].id == idSupplier) {
+						var agree = confirm("Do you want to unlink the Supplier with id " + idSupplier + " of the item with id " + idItem + "?");
+						if (agree) {
+							for (var i = 0; i < item.suppliers.length; i++) {
+								if (item.suppliers[i].id == idSupplier) {
+									item.suppliers[i] = null;
+								}
+							}
+							$.ajax({
+								headers: {
+									'Content-Type': 'application/json'
+								},
+								url: "api/items/" + idItem,
+								type: "PUT",
+								datatype: "json",
+								data: JSON.stringify(item),
+								success: function(item) {
+									console.log("adios");
+								}
+							});
+						}
+					} else {
+						deleteSupplier();
+					}
+				}
+				if (item.suppliers.length == 0) {
+					deleteSupplier();
+				}
+			}
+		});
+	});
+
+	$('.btnResetSupplier').click(function() {
+		$("#idSupplier").val(null);
+		$("#name").val("");
+		$('#country').val(new Date().toDateInputValue());
+	});
+
+	$(document).on("click", ".btnUpdateMTM", function() {
+		rowSupplier = $(this).closest("tr");
+		idSupplier = rowSupplier.find('td:eq(0)').text();
+		name = rowSupplier.find('td:eq(1)').text();
+		country = rowSupplier.find('td:eq(2)').text();
+		var data = {
+			id: idSupplier,
+			name: name,
+			country: country,
+			item: null
+		};
+		item.suppliers.push(data);
+		console.log(item.suppliers);
+		console.log(item);
+		$.ajax({
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			url: "api/items/" + idItem,
+			type: "PUT",
+			datatype: "json",
+			data: JSON.stringify(item),
+			success: function(item) {
+				$("#belongs").val(done_outline);
+			}
+		});
+	});
+
 });
 
-$("#btnNewSupplier").click(function() {
-	idSupplier = null;
-	$("#formSuppliers").trigger("reset");
-	$(".modal-header").css("background-color", "#17a2b8");
-	$(".modal-header").css("color", "white");
-	$(".modal-title").text("New Supplier");
-	$('#suppliersCRUD').modal('show');
-});
-
-$(document).on("click", ".btnEditSupplier", function() {
-	rowSupplier = $(this).closest("tr");
-	idSupplier = rowSupplier.find('td:eq(0)').text();
-	name = rowSupplier.find('td:eq(1)').text();
-	country = rowSupplier.find('td:eq(2)').text();
-	$("#idItem").val(idItem);
-	$("#idSupplier").val(idSupplier);
-	$("#name").val(name);
-	$("#country").val(country);
-	$(".modal-header").css("background-color", "#007bff");
-	$(".modal-header").css("color", "white");
-	$(".modal-title").text("Edit Price Reduction");
-	$('#suppliersCRUD').modal('show');
-});
-
-$(document).on("click", ".btnDeleteSupplier", function() {
-	rowSupplier = $(this).closest("tr");
-	idSupplier = $(this).closest('tr').find('td:eq(0)').text();
-	var agree = confirm("Do you want to delete the Price reduction with id " + idSupplier + "?");
+function deleteSupplier() {
+	var agree = confirm("Do you want to delete the Supplier with id " + idSupplier + "?");
 	if (agree) {
 		$.ajax({
 			url: "api/suppliers/" + idSupplier,
@@ -235,20 +315,12 @@ $(document).on("click", ".btnDeleteSupplier", function() {
 			data: { id: idSupplier },
 			success: function() {
 				/*suppliersList.rowSupplier(rowSupplier.parents('tr')).remove().draw();*/
-							console.log("hola");
+				console.log("hola");
 				suppliersList.ajax.reload(null, false);
 			}
 		});
 	}
-});
-
-$('.btnResetSupplier').click(function() {
-	$("#idSupplier").val(null);
-	$("#name").val("");
-	$('#country').val(new Date().toDateInputValue());
-});
-
-});
+}
 
 Date.prototype.toDateInputValue = (function() {
 	var local = new Date(this);
