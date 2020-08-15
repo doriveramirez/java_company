@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<title>Users</title>
 <script>
 	window.contextRoot = '${contextRoot}'
 </script>
@@ -28,7 +28,13 @@
 
 	<div class="container">
 		<div class="row">
-			<div class="col-lg-12">
+			<div class="col-lg-11">
+				<form>
+					<input type="button" value="Back" class="btn btn-info"
+						onclick="history.back()">
+				</form>
+			</div>
+			<div class="col-lg-1">
 				<button id="btnNew" type="button" class="btn btn-info"
 					data-toggle="modal">
 					<i class="material-icons">add</i>
@@ -133,7 +139,7 @@
 	<script type="text/javascript" src="js/datatables/datatables.min.js"></script>
 
 	<script type="text/javascript" src="js/users.js"></script>
-	
+
 	<script type="text/javascript" src="js/scripts.js"></script>
 </body>
 </html>

@@ -12,7 +12,7 @@ public class ErrorHandlerController implements ErrorController{
 	@RequestMapping("/error")
 	@ResponseBody
 	public String getErrorPath() {
-		return "<center><h1>Error 404 - Page not found</h1></center>";
+		return "<center><h1>Error 404 - Page not found</h1><br><a href='/'>back</a></center>";
 	}
 	
 }
