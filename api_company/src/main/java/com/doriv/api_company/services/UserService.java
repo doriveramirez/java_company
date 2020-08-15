@@ -46,18 +46,35 @@ public class UserService implements UserDetailsService {
 	public void createUser(@Valid User user, String roleName) {
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 		user.setPassword(encoder.encode(user.getPassword()));
-		Role roleAux = roleRepo.findByName(roleName);
-		Role role = new Role(roleName);
-		if (roleAux == null) {
-			roleRepo.save(role);
-		} else {
-			role = roleAux;
-		}
+//		Role roleAux = roleRepo.findByName(roleName);
+//		Role role = new Role(roleName);
+//		if (roleAux == null) {
+//			roleRepo.save(role);
+//		} else {
+//			role = roleAux;
+//		}
+		createRoles("ADMIN");
+		createRoles("USER");
+		Role role = roleRepo.findByName(roleName);
 		List<Role> roles = new ArrayList<>();
 		roles.add(role);
 		user.setRoles(roles);
 		user.setId();
 		repo.save(user);
+	}
+	
+	private void createRoles(String string) {
+		Role roleAux = roleRepo.findByName(string);
+		Role role = new Role(string);
+		if (roleAux == null) {
+			roleRepo.save(role);
+		} else {
+			role = roleAux;
+		}
+	}
+	
+	public Role getRole(String string) {
+		return roleRepo.findByName(string);
 	}
 	
 }

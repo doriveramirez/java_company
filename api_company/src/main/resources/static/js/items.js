@@ -1,7 +1,5 @@
 $(document).ready(function() {
 	
-	var id_item;
-	
 	$('#creationDate').val(new Date().toDateInputValue());
 	$('#state').val("false");
 
@@ -54,9 +52,7 @@ $(document).ready(function() {
 				creationDate: creationDate,
 				creator: creator
 			};
-		console.log(JSON.stringify(data))
 		if (id!=""){
-			console.log("hola");
 			$.ajax({
 			headers: { 
         		'Content-Type': 'application/json' 
@@ -88,6 +84,7 @@ $(document).ready(function() {
 
 	$("#btnNew").click(function() {
 		$("#formItems").trigger("reset");
+		$('#creationDate').val(new Date().toDateInputValue());
 		$(".modal-header").css("background-color", "#17a2b8");
 		$(".modal-header").css("color", "white");
 		$(".modal-title").text("New item");
@@ -134,7 +131,6 @@ $(document).ready(function() {
 	});
 	
 	$(document).on("click", ".btnView", function() {
-		console.log("Hola");
 		var id = $(this).closest('tr').find('td:eq(0)').text();
 		window.location.href = "item_" + id;
 	});

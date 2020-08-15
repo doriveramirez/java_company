@@ -123,6 +123,7 @@ $(document).ready(function() {
 
 	$("#btnNewPriceReduction").click(function() {
 		$("#formPriceReductions").trigger("reset");
+		$('#startDate').val(new Date().toDateInputValue());
 		$(".modal-header").css("background-color", "#17a2b8");
 		$(".modal-header").css("color", "white");
 		$(".modal-title").text("New Price Reduction");
@@ -291,6 +292,7 @@ $(document).ready(function() {
 							}
 						}
 						updateItem(item);
+						rowSupplier.find('td:eq(3)').html("<div class='text-center'><div class='btn-group'><button class='btn btn-primary btn-sm btnUpdateMTM'><i class='material-icons'>add_box</i></button></div></div>")
 					}
 				} else {
 					deleteSupplier();
